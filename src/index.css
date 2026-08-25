@@ -17,16 +17,9 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* 🚀 Modern Browser Performance Booster: Render Offscreen Sections on Demand */
+  /* 🚀 Clean Hardware-Accelerated Section Containers */
   section {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 850px;
     transform: translateZ(0);
-  }
-
-  /* Hero is above the fold, skip content-visibility */
-  #hero {
-    content-visibility: visible;
   }
 }
 
