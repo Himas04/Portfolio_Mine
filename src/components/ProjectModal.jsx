@@ -4,9 +4,7 @@ import {
   ExternalLink, 
   CheckCircle2, 
   Layers, 
-  Target, 
-  ShieldCheck,
-  FolderGit2
+  Target
 } from 'lucide-react';
 import { GithubIcon } from './Icons';
 
@@ -32,18 +30,18 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#070D14]/85 backdrop-blur-2xl animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#070D14]/75 backdrop-blur-2xl animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#0D1926] p-6 sm:p-8 rounded-3xl border border-[#1E3A5F] shadow-2xl shadow-black/90 space-y-8 backdrop-blur-3xl text-[#F0F9FF]"
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#0D1926]/60 p-6 sm:p-8 rounded-3xl border border-[#1E3A5F]/80 shadow-2xl shadow-black/90 space-y-8 backdrop-blur-3xl text-[#F0F9FF]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
           aria-label="Close modal"
-          className="absolute top-5 right-5 p-2 rounded-xl text-[#94A3B8] hover:text-[#F0F9FF] bg-[#08101A] hover:bg-[#1E3A5F]/40 border border-[#1E3A5F] transition-colors cursor-pointer z-10"
+          className="absolute top-5 right-5 p-2 rounded-xl text-[#94A3B8] hover:text-[#F0F9FF] bg-[#08101A]/60 hover:bg-[#1E3A5F]/50 border border-[#1E3A5F]/80 transition-colors cursor-pointer z-10"
         >
           <X className="w-5 h-5 text-[#38BDF8]" />
         </button>
@@ -51,7 +49,7 @@ export default function ProjectModal({ project, onClose }) {
         {/* Modal Header */}
         <div className="space-y-3 pr-10 border-b border-[#1E3A5F]/50 pb-5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-[#08101A] text-[#7DD3FC] border border-[#1E3A5F]">
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-[#08101A]/60 text-[#7DD3FC] border border-[#1E3A5F]/80">
               {project.category}
             </span>
             <span className="text-xs font-mono text-[#38BDF8]">{project.role || project.badge}</span>
@@ -68,7 +66,7 @@ export default function ProjectModal({ project, onClose }) {
               <Layers className="w-4 h-4 text-[#38BDF8]" />
               <span>Project Architecture & Overview</span>
             </h3>
-            <p className="bg-[#08101A] p-4 rounded-2xl border border-[#1E3A5F]/50 leading-relaxed text-sm text-[#F0F9FF]">
+            <p className="bg-[#08101A]/60 p-4 rounded-2xl border border-[#1E3A5F]/60 leading-relaxed text-sm text-[#F0F9FF] backdrop-blur-md">
               {project.description || project.summary}
             </p>
           </div>
@@ -82,7 +80,7 @@ export default function ProjectModal({ project, onClose }) {
               </h3>
               <div className="grid grid-cols-1 gap-2.5">
                 {projectHighlights.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-[#08101A] border border-[#1E3A5F] text-xs sm:text-sm font-mono">
+                  <div key={idx} className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-[#08101A]/60 border border-[#1E3A5F]/70 text-xs sm:text-sm font-mono backdrop-blur-sm">
                     <CheckCircle2 className="w-4 h-4 text-[#2DD4BF] mt-0.5 shrink-0" />
                     <span className="text-[#F0F9FF]">{item}</span>
                   </div>
@@ -101,7 +99,7 @@ export default function ProjectModal({ project, onClose }) {
                 {projectTags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1.5 rounded-xl bg-[#08101A] border border-[#1E3A5F] text-xs font-mono font-medium text-[#7DD3FC]"
+                    className="px-3 py-1.5 rounded-xl bg-[#08101A]/60 border border-[#1E3A5F]/80 text-xs font-mono font-medium text-[#7DD3FC] backdrop-blur-sm"
                   >
                     {tag}
                   </span>
@@ -130,7 +128,7 @@ export default function ProjectModal({ project, onClose }) {
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-[#F0F9FF] bg-[#08101A] hover:bg-[#1E3A5F]/40 border border-[#1E3A5F] hover:border-[#38BDF8] transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-[#F0F9FF] bg-[#08101A]/60 hover:bg-[#1E3A5F]/50 border border-[#1E3A5F]/80 hover:border-[#38BDF8] transition-all cursor-pointer"
               >
                 <GithubIcon className="w-4 h-4 text-[#38BDF8]" />
                 <span>Source Code Repository</span>
@@ -140,7 +138,7 @@ export default function ProjectModal({ project, onClose }) {
 
           <button
             onClick={onClose}
-            className="px-4 py-2.5 rounded-xl text-xs font-medium text-[#94A3B8] hover:text-[#F0F9FF] bg-[#08101A] hover:bg-[#1E3A5F]/30 border border-[#1E3A5F] transition-colors cursor-pointer"
+            className="px-4 py-2.5 rounded-xl text-xs font-medium text-[#94A3B8] hover:text-[#F0F9FF] bg-[#08101A]/60 hover:bg-[#1E3A5F]/40 border border-[#1E3A5F]/80 transition-colors cursor-pointer"
           >
             Close Window
           </button>

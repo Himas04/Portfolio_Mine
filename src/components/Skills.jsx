@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { 
   Code2, 
-  Database, 
-  Terminal, 
   Cpu, 
-  CheckCircle,
-  Layers,
-  Sparkles,
-  Play,
-  Layout,
-  Server,
-  Cloud,
-  CheckCircle2
+  Layout, 
+  Server, 
+  Cloud, 
+  CheckCircle2 
 } from 'lucide-react';
 import { resumeData } from '../data/resumeData';
 import TestRunnerDemo from './TestRunnerDemo';
@@ -41,14 +35,14 @@ export default function Skills() {
         
         {/* Section Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D1926] border border-[#1E3A5F] text-[#7DD3FC] text-xs font-mono tracking-wider uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-[#38BDF8]/30 text-[#7DD3FC] text-xs font-mono tracking-wider uppercase backdrop-blur-md shadow-lg shadow-black/20">
             <Cpu className="w-3.5 h-3.5 text-[#38BDF8]" />
             <span>Technical Capabilities</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F0F9FF] tracking-tight">
             Skills & <span className="gradient-text-hero">Specializations</span>
           </h2>
-          <p className="text-sm sm:text-base text-[#94A3B8] max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-[#94A3B8] max-w-2xl mx-auto drop-shadow-sm">
             Comprehensive technology stack covering modern frontend engineering, secure backend microservices, QA automation, and cloud deployments.
           </p>
         </div>
@@ -65,7 +59,7 @@ export default function Skills() {
               className={`px-4 py-2 rounded-full text-xs font-bold font-mono transition-all cursor-pointer ${
                 activeTab === cat
                   ? 'bg-[#38BDF8] text-[#070D14] shadow-lg shadow-[#38BDF8]/25 scale-105'
-                  : 'bg-[#0D1926] text-[#94A3B8] hover:text-[#F0F9FF] hover:bg-[#1E3A5F]/40 border border-[#1E3A5F]'
+                  : 'bg-white/[0.04] text-[#94A3B8] hover:text-[#F0F9FF] hover:bg-white/[0.08] border border-white/10 backdrop-blur-md'
               }`}
             >
               {cat}
@@ -73,7 +67,7 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* Skills Category Grid */}
+        {/* Skills Category Grid (Crystal Clear Glass) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCategories.map((group, groupIdx) => {
             const Icon = SKILL_ICONS[group.category] || Code2;
@@ -81,11 +75,11 @@ export default function Skills() {
             return (
               <div
                 key={group.category || groupIdx}
-                className="bg-[#0D1926] rounded-3xl p-6 sm:p-7 border border-[#1E3A5F] hover:border-[#38BDF8] transition-all duration-300 space-y-6 shadow-2xl backdrop-blur-2xl group hover:-translate-y-1"
+                className="bg-[#050C16]/25 hover:bg-[#050C16]/40 rounded-3xl p-6 sm:p-7 border border-[#38BDF8]/30 hover:border-[#38BDF8]/80 transition-all duration-300 space-y-6 shadow-2xl backdrop-blur-md group hover:-translate-y-1"
               >
                 {/* Category Header */}
-                <div className="flex items-center gap-3 border-b border-[#1E3A5F]/50 pb-4">
-                  <div className="p-2.5 rounded-2xl bg-[#08101A] text-[#38BDF8] border border-[#1E3A5F] group-hover:scale-110 transition-transform">
+                <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+                  <div className="p-2.5 rounded-2xl bg-white/[0.05] text-[#38BDF8] border border-[#38BDF8]/30 group-hover:scale-110 transition-transform">
                     <Icon className="w-5 h-5 text-[#38BDF8]" />
                   </div>
                   <div>
@@ -106,7 +100,7 @@ export default function Skills() {
                         <span className="text-[#F0F9FF] font-medium">{skill.name}</span>
                         <div className="flex items-center gap-2">
                           {skill.tag && (
-                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#08101A] text-[#94A3B8] border border-[#1E3A5F]/40">
+                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.05] text-[#94A3B8] border border-white/10">
                               {skill.tag}
                             </span>
                           )}
@@ -115,7 +109,7 @@ export default function Skills() {
                       </div>
                       
                       {/* Nordic Glacier Progress Bar */}
-                      <div className="h-2 w-full bg-[#08101A] rounded-full overflow-hidden border border-[#1E3A5F]/50">
+                      <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden border border-white/10">
                         <div
                           className="h-full bg-gradient-to-r from-[#1E3A5F] via-[#38BDF8] to-[#2DD4BF] rounded-full transition-all duration-1000 group-hover:shadow-sm group-hover:shadow-[#38BDF8]/40"
                           style={{ width: `${skill.level}%` }}

@@ -39,14 +39,14 @@ export default function About() {
         
         {/* Section Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D1926] border border-[#1E3A5F] text-[#7DD3FC] text-xs font-mono tracking-wider uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-[#38BDF8]/30 text-[#7DD3FC] text-xs font-mono tracking-wider uppercase backdrop-blur-md shadow-lg shadow-black/20">
             <User className="w-3.5 h-3.5 text-[#38BDF8]" />
             <span>Profile & Background</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F0F9FF] tracking-tight">
             About <span className="gradient-text-hero">Ashraff Himas</span>
           </h2>
-          <p className="text-sm sm:text-base text-[#94A3B8] max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-[#94A3B8] max-w-2xl mx-auto drop-shadow-sm">
             A passionate Computer Science undergraduate specializing in full-stack architecture, software quality assurance, and DevOps automation.
           </p>
         </div>
@@ -57,11 +57,11 @@ export default function About() {
           {/* Left Column: Narrative Summary & Strengths */}
           <div className="lg:col-span-7 space-y-6">
             
-            {/* Story Card */}
-            <div className="bg-[#0D1926] p-6 sm:p-8 rounded-3xl border border-[#1E3A5F] space-y-5 shadow-2xl backdrop-blur-2xl">
+            {/* Story Card (Crystal Clear Glass) */}
+            <div className="bg-[#050C16]/25 hover:bg-[#050C16]/40 p-6 sm:p-8 rounded-3xl border border-[#38BDF8]/30 hover:border-[#38BDF8]/70 space-y-5 shadow-2xl backdrop-blur-md transition-all duration-300">
               
-              <div className="flex items-center gap-4 border-b border-[#1E3A5F]/50 pb-4">
-                <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[#38BDF8] p-0.5 bg-[#08101A] shadow-md shrink-0">
+              <div className="flex items-center gap-4 border-b border-white/10 pb-4">
+                <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[#38BDF8] p-0.5 bg-white/[0.05] shadow-md shrink-0">
                   <img
                     src={personal.avatar}
                     alt={personal.name}
@@ -91,16 +91,16 @@ export default function About() {
               </div>
 
               {/* Stat Highlights Row */}
-              <div className="pt-4 border-t border-[#1E3A5F]/50 grid grid-cols-3 gap-3 text-center">
-                <div className="p-3 rounded-2xl bg-[#08101A] border border-[#1E3A5F]">
+              <div className="pt-4 border-t border-white/10 grid grid-cols-3 gap-3 text-center">
+                <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
                   <span className="text-xl sm:text-2xl font-black text-[#F0F9FF] block">BSc</span>
                   <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Comp Science</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-[#08101A] border border-[#1E3A5F]">
+                <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
                   <span className="text-xl sm:text-2xl font-black text-[#38BDF8] block">5+</span>
                   <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Verified Certs</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-[#08101A] border border-[#1E3A5F]">
+                <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
                   <span className="text-xl sm:text-2xl font-black text-[#2DD4BF] block">100%</span>
                   <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Commitment</span>
                 </div>
@@ -119,9 +119,9 @@ export default function About() {
                   return (
                     <div
                       key={idx}
-                      className="p-4 rounded-2xl bg-[#0D1926] border border-[#1E3A5F] hover:border-[#38BDF8] transition-all space-y-2 group shadow-lg"
+                      className="p-4 rounded-2xl bg-[#050C16]/25 hover:bg-[#050C16]/45 border border-[#38BDF8]/25 hover:border-[#38BDF8] backdrop-blur-md transition-all space-y-2 group shadow-lg"
                     >
-                      <div className="p-2 rounded-xl bg-[#08101A] text-[#38BDF8] w-fit border border-[#1E3A5F]">
+                      <div className="p-2 rounded-xl bg-white/[0.05] text-[#38BDF8] w-fit border border-white/10">
                         <Icon className="w-4 h-4" />
                       </div>
                       <h5 className="text-xs font-bold text-[#F0F9FF] group-hover:text-[#7DD3FC] transition-colors leading-tight">
@@ -138,18 +138,18 @@ export default function About() {
 
           </div>
 
-          {/* Right Column: Contact Details, Education Preview & Languages */}
+          {/* Right Column: Contact Details & Languages */}
           <div className="lg:col-span-5 space-y-6">
             
-            {/* Quick Contact & Info Card */}
-            <div className="bg-[#0D1926] p-6 sm:p-7 rounded-3xl border border-[#1E3A5F] space-y-5 shadow-2xl backdrop-blur-2xl">
+            {/* Quick Contact Card */}
+            <div className="bg-[#050C16]/25 hover:bg-[#050C16]/40 p-6 sm:p-7 rounded-3xl border border-[#38BDF8]/30 hover:border-[#38BDF8]/70 space-y-5 shadow-2xl backdrop-blur-md transition-all duration-300">
               <h3 className="text-base font-bold text-[#F0F9FF] flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-[#38BDF8]" />
                 <span>Personal & Contact Info</span>
               </h3>
 
-              <div className="space-y-3.5 text-xs sm:text-sm font-mono">
-                <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#08101A] border border-[#1E3A5F]">
+              <div className="space-y-3 text-xs sm:text-sm font-mono">
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
                   <MapPin className="w-4 h-4 text-[#38BDF8] shrink-0" />
                   <div>
                     <span className="text-[#94A3B8] text-[10px] block uppercase">Location</span>
@@ -157,7 +157,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#08101A] border border-[#1E3A5F]">
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
                   <Mail className="w-4 h-4 text-[#38BDF8] shrink-0" />
                   <div>
                     <span className="text-[#94A3B8] text-[10px] block uppercase">Email</span>
@@ -167,7 +167,7 @@ export default function About() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#08101A] border border-[#1E3A5F]">
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
                   <Phone className="w-4 h-4 text-[#2DD4BF] shrink-0" />
                   <div>
                     <span className="text-[#94A3B8] text-[10px] block uppercase">Phone & WhatsApp</span>
@@ -179,7 +179,7 @@ export default function About() {
               </div>
 
               {/* Multilingual Capabilities */}
-              <div className="pt-4 border-t border-[#1E3A5F]/50 space-y-3">
+              <div className="pt-4 border-t border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#F0F9FF] flex items-center gap-1.5">
                     <Languages className="w-4 h-4 text-[#38BDF8]" />
@@ -192,10 +192,10 @@ export default function About() {
                   {languages.map((lang, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#08101A] border border-[#1E3A5F] text-xs"
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-sm text-xs"
                     >
                       <span className="font-semibold text-[#F0F9FF]">{lang.name}</span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#0D1926] text-[#7DD3FC] border border-[#1E3A5F]">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/[0.06] text-[#7DD3FC] border border-[#38BDF8]/20">
                         {lang.level}
                       </span>
                     </div>

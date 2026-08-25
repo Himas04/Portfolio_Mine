@@ -4,9 +4,7 @@ import {
   Calendar, 
   MapPin, 
   BookOpen, 
-  Award,
-  CheckCircle,
-  ExternalLink
+  CheckCircle 
 } from 'lucide-react';
 import { resumeData } from '../data/resumeData';
 
@@ -19,19 +17,19 @@ export default function Education() {
         
         {/* Section Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D1926] border border-[#1E3A5F] text-[#7DD3FC] text-xs font-mono tracking-wider uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-[#38BDF8]/30 text-[#7DD3FC] text-xs font-mono tracking-wider uppercase backdrop-blur-md shadow-lg shadow-black/20">
             <GraduationCap className="w-3.5 h-3.5 text-[#38BDF8]" />
             <span>Academic Background</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F0F9FF] tracking-tight">
             Academic <span className="gradient-text-hero">Qualifications</span>
           </h2>
-          <p className="text-sm sm:text-base text-[#94A3B8] max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-[#94A3B8] max-w-2xl mx-auto drop-shadow-sm">
             Formal Computer Science and Software Engineering degree programs and foundation credentials.
           </p>
         </div>
 
-        {/* Education Grid */}
+        {/* Education Grid (Crystal Clear Glass) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {education.map((item, idx) => {
             const highlightsList = item.highlights || item.modules || [];
@@ -40,14 +38,14 @@ export default function Education() {
             return (
               <div
                 key={item.id || `${item.degree}-${idx}`}
-                className="group bg-[#0D1926] rounded-3xl p-6 sm:p-8 border border-[#1E3A5F] hover:border-[#38BDF8] transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-2xl backdrop-blur-2xl"
+                className="group bg-[#050C16]/25 hover:bg-[#050C16]/40 rounded-3xl p-6 sm:p-8 border border-[#38BDF8]/30 hover:border-[#38BDF8]/80 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-2xl backdrop-blur-md"
               >
                 <div className="space-y-6">
                   
                   {/* Header: Degree, Institution, Period */}
-                  <div className="space-y-2 border-b border-[#1E3A5F]/50 pb-5">
+                  <div className="space-y-2 border-b border-white/10 pb-5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-[#08101A] text-[#7DD3FC] border border-[#1E3A5F]">
+                      <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-white/[0.05] text-[#7DD3FC] border border-[#38BDF8]/30 backdrop-blur-sm">
                         {statusBadge}
                       </span>
                       <span className="text-xs font-mono text-[#F0F9FF] flex items-center gap-1.5">
@@ -62,7 +60,7 @@ export default function Education() {
 
                     <div className="text-xs sm:text-sm font-semibold text-[#38BDF8] flex items-center gap-2">
                       <span>{item.institution}</span>
-                      <span className="text-[#1E3A5F]">•</span>
+                      <span className="text-white/20">•</span>
                       <span className="text-xs font-mono text-[#94A3B8] flex items-center gap-1">
                         <MapPin className="w-3.5 h-3.5 text-[#38BDF8]" />
                         {item.location}
@@ -91,7 +89,7 @@ export default function Education() {
                 </div>
 
                 {/* Bottom Card Footer Badge */}
-                <div className="pt-6 mt-6 border-t border-[#1E3A5F]/50 flex items-center justify-between text-xs font-mono text-[#94A3B8]">
+                <div className="pt-5 mt-5 border-t border-white/10 flex items-center justify-between text-xs font-mono text-[#94A3B8]">
                   <span>Status: <strong className="text-[#2DD4BF] font-bold">{statusBadge}</strong></span>
                   <span className="text-[#7DD3FC] group-hover:translate-x-1 transition-transform">
                     {item.type === 'university' ? 'Cardiff Met / Plymouth Standard →' : 'Secondary Education →'}

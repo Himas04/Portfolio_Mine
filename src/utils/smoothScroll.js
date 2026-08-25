@@ -1,4 +1,4 @@
-// 🚀 Cinematic Smooth Scroll with easeInOutCubic Curve
+// 🚀 Cinematic Smooth Scroll with Native easeInOutCubic Curve
 export const smoothScrollTo = (targetIdOrY, duration = 750) => {
   let targetY = 0;
   

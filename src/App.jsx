@@ -27,7 +27,17 @@ const SECTIONS = [
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
 
-  // 🚀 Zero-Overhead IntersectionObserver for ScrollSpy (Native Browser Engine)
+  // 🔝 Always open the website at the top (Hero section)
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    if (!window.location.hash || window.location.hash === '#hero') {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+  // 🚀 Zero-Overhead Native IntersectionObserver for ScrollSpy
   useEffect(() => {
     const sectionElements = SECTIONS.map(s => document.getElementById(s.id)).filter(Boolean);
     
@@ -57,7 +67,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070D14] text-[#F0F9FF] relative selection:bg-[#38BDF8]/30 selection:text-[#F0F9FF] font-sans">
+    <div className="min-h-screen bg-[#050B12] text-[#F0F9FF] relative selection:bg-[#38BDF8]/30 selection:text-[#F0F9FF] font-sans">
       
       {/* 🌟 Dynamic Scrollytelling Background Engine */}
       <BackgroundCanvas activeSection={activeSection} />
@@ -68,7 +78,7 @@ export default function App() {
       {/* Fixed Sticky HUD Navigation Bar */}
       <Navbar activeSection={activeSection} />
 
-      {/* 🎯 Ultra-Minimalist Floating Dot Line (Takes 0 space, Never blocks content) */}
+      {/* 🎯 Ultra-Minimalist Floating Dot Line */}
       <div className="fixed right-3 top-1/2 -translate-y-1/2 z-40 hidden 2xl:flex flex-col items-center gap-3 pointer-events-auto">
         {SECTIONS.map((sec) => {
           const isActive = activeSection === sec.id;
@@ -90,7 +100,7 @@ export default function App() {
               />
 
               {/* Hover Tooltip */}
-              <span className="absolute right-7 px-2.5 py-1 rounded-lg bg-[#0D1926] border border-[#1E3A5F] text-[10px] font-mono font-bold text-[#7DD3FC] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-xl whitespace-nowrap">
+              <span className="absolute right-7 px-2.5 py-1 rounded-lg bg-[#070D14]/80 backdrop-blur-md border border-[#1E3A5F] text-[10px] font-mono font-bold text-[#7DD3FC] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-xl whitespace-nowrap">
                 {sec.name}
               </span>
             </a>

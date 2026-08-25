@@ -1,87 +1,85 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 const TOTAL_FRAMES = 100;
+const IMAGE_NATURAL_WIDTH = 1920;
+const IMAGE_NATURAL_HEIGHT = 1080;
 
-// Section ambient glow overlays for Nordic Glacier & Ice Cyan
+// Section ambient accent glows
 const SECTION_AMBIENTS = {
-  hero: 'radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.22) 0%, transparent 65%)',
-  about: 'radial-gradient(circle at 20% 40%, rgba(45, 212, 191, 0.18) 0%, transparent 55%)',
-  experience: 'radial-gradient(circle at 80% 50%, rgba(56, 189, 248, 0.2) 0%, transparent 60%)',
-  projects: 'radial-gradient(circle at 50% 60%, rgba(125, 211, 252, 0.2) 0%, transparent 65%)',
-  skills: 'radial-gradient(circle at 30% 70%, rgba(45, 212, 191, 0.18) 0%, transparent 55%)',
-  education: 'radial-gradient(circle at 70% 30%, rgba(56, 189, 248, 0.2) 0%, transparent 60%)',
-  certificates: 'radial-gradient(circle at 50% 65%, rgba(45, 212, 191, 0.22) 0%, transparent 60%)',
-  contact: 'radial-gradient(circle at 50% 80%, rgba(56, 189, 248, 0.24) 0%, transparent 65%)'
+  hero: 'radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.15) 0%, transparent 70%)',
+  about: 'radial-gradient(circle at 20% 40%, rgba(45, 212, 191, 0.12) 0%, transparent 60%)',
+  experience: 'radial-gradient(circle at 80% 50%, rgba(56, 189, 248, 0.12) 0%, transparent 65%)',
+  projects: 'radial-gradient(circle at 50% 60%, rgba(125, 211, 252, 0.14) 0%, transparent 70%)',
+  skills: 'radial-gradient(circle at 30% 70%, rgba(45, 212, 191, 0.12) 0%, transparent 60%)',
+  education: 'radial-gradient(circle at 70% 30%, rgba(56, 189, 248, 0.12) 0%, transparent 65%)',
+  certificates: 'radial-gradient(circle at 50% 65%, rgba(45, 212, 191, 0.14) 0%, transparent 65%)',
+  contact: 'radial-gradient(circle at 50% 80%, rgba(56, 189, 248, 0.16) 0%, transparent 70%)'
 };
 
 const getFramePath = (index) => {
   const padded = String(index).padStart(3, '0');
-  return `/assets/Images/ezgif-frame-${padded}.jpg`;
+  return `/assets/Images/ezgif-frame-${padded}.png`;
 };
 
 export default function BackgroundCanvas({ activeSection = 'hero' }) {
   const canvasRef = useRef(null);
-  const imagesRef = useRef([]);
+  const imagesRef = useRef(new Array(TOTAL_FRAMES + 1));
   const loadedSetRef = useRef(new Set());
-  const lastDrawnFrameRef = useRef(-1);
   const targetFrameRef = useRef(1);
   const currentFrameRef = useRef(1);
-  const isReadyRef = useRef(false);
   const isRunningRef = useRef(false);
+  const isReadyRef = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // 1. ⚡ CONCURRENT ASYNC PRELOADER & GPU TEXTURE DECODER (ALL 100 FRAMES)
+  // Cached geometry bounds for instantaneous GPU rendering
+  const boundsRef = useRef({ cw: 0, ch: 0, rw: 0, rh: 0, ox: 0, oy: 0 });
+
+  // 1. ⚡ PARALLEL PRELOADER FOR ORIGINAL PNG IMAGES
   useEffect(() => {
     let isMounted = true;
     const images = new Array(TOTAL_FRAMES + 1);
 
-    const loadSingleFrame = async (index) => {
-      const img = new Image();
-      img.src = getFramePath(index);
-      images[index] = img;
+    const loadSingleImage = (index) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = getFramePath(index);
 
-      try {
-        if ('decode' in img) {
-          await img.decode();
-        } else {
-          await new Promise((res) => {
-            img.onload = res;
-            img.onerror = res;
-          });
-        }
-      } catch (err) {
-        // Fallback for decode error
-      }
+        img.onload = () => {
+          if (!isMounted) return resolve(img);
+          loadedSetRef.current.add(index);
+          images[index] = img;
 
-      if (!isMounted) return img;
-      loadedSetRef.current.add(index);
+          // Render first frame immediately
+          if (index === 1 && !isReadyRef.current) {
+            isReadyRef.current = true;
+            setIsLoaded(true);
+            drawSubFrame(1.0);
+          }
+          resolve(img);
+        };
 
-      // Draw initial frame as soon as frame 1 is decoded
-      if (index === 1 && !isReadyRef.current) {
-        isReadyRef.current = true;
-        setIsLoaded(true);
-        drawFrame(1);
-      }
-      return img;
+        img.onerror = () => {
+          resolve(null);
+        };
+
+        images[index] = img;
+      });
     };
 
     imagesRef.current = images;
 
-    // Load first 15 frames immediately for instant rendering
-    const initialBatch = [];
-    for (let i = 1; i <= Math.min(15, TOTAL_FRAMES); i++) {
-      initialBatch.push(loadSingleFrame(i));
+    // Load initial 10 frames with priority
+    const priorityBatch = [];
+    for (let i = 1; i <= Math.min(10, TOTAL_FRAMES); i++) {
+      priorityBatch.push(loadSingleImage(i));
     }
 
-    Promise.all(initialBatch).then(() => {
+    Promise.all(priorityBatch).then(() => {
       if (!isMounted) return;
-
-      // Concurrently load the rest of the 85 frames (total size is only ~3.5MB)
-      const remainingBatches = [];
-      for (let i = 16; i <= TOTAL_FRAMES; i++) {
-        remainingBatches.push(loadSingleFrame(i));
+      // Load remaining frames
+      for (let i = 11; i <= TOTAL_FRAMES; i++) {
+        loadSingleImage(i);
       }
-      Promise.all(remainingBatches);
     });
 
     return () => {
@@ -89,8 +87,8 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
     };
   }, []);
 
-  // 2. 🚀 HIGH-PERFORMANCE DIRECT GPU 2D DRAWING
-  const drawFrame = useCallback((frameIndex) => {
+  // 2. 🎬 ULTRA-FLUID SUB-FRAME ALPHA CROSS-FADING ENGINE
+  const drawSubFrame = useCallback((frameFloat) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -100,58 +98,58 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
     });
     if (!ctx) return;
 
-    // Use fast hardware bilinear interpolation
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'medium';
+    const { cw, ch, rw, rh, ox, oy } = boundsRef.current;
+    if (cw === 0 || ch === 0) return;
 
-    let img = imagesRef.current[frameIndex];
+    const clamped = Math.max(1, Math.min(TOTAL_FRAMES, frameFloat));
+    const floorIndex = Math.floor(clamped);
+    const ceilIndex = Math.min(TOTAL_FRAMES, floorIndex + 1);
+    const fraction = clamped - floorIndex;
 
-    // Safe fallback if target frame is still decoding
-    if (!img || !img.complete || img.naturalWidth === 0) {
-      if (lastDrawnFrameRef.current > 0 && imagesRef.current[lastDrawnFrameRef.current]?.complete) {
-        img = imagesRef.current[lastDrawnFrameRef.current];
-      } else {
-        for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-          const prev = frameIndex - offset;
-          const next = frameIndex + offset;
-          if (prev >= 1 && loadedSetRef.current.has(prev)) {
-            img = imagesRef.current[prev];
-            break;
-          }
-          if (next <= TOTAL_FRAMES && loadedSetRef.current.has(next)) {
-            img = imagesRef.current[next];
-            break;
-          }
+    let baseImg = imagesRef.current[floorIndex];
+    let nextImg = imagesRef.current[ceilIndex];
+
+    // Fallback if specific frame is buffering
+    if (!baseImg || !baseImg.complete) {
+      for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
+        const prev = floorIndex - offset;
+        const next = floorIndex + offset;
+        if (prev >= 1 && loadedSetRef.current.has(prev)) {
+          baseImg = imagesRef.current[prev];
+          break;
+        }
+        if (next <= TOTAL_FRAMES && loadedSetRef.current.has(next)) {
+          baseImg = imagesRef.current[next];
+          break;
         }
       }
     }
 
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    if (!nextImg || !nextImg.complete) {
+      nextImg = baseImg;
+    }
 
-    const cw = canvas.width;
-    const ch = canvas.height;
-    const iw = img.naturalWidth;
-    const ih = img.naturalHeight;
+    if (!baseImg || !baseImg.complete) return;
 
-    // Cover scale calculation
-    const scale = Math.max(cw / iw, ch / ih);
-    const rw = iw * scale;
-    const rh = ih * scale;
-    const ox = (cw - rw) * 0.5;
-    const oy = (ch - rh) * 0.5;
+    // Draw primary frame (100% solid opacity)
+    ctx.globalAlpha = 1.0;
+    ctx.drawImage(baseImg, 0, 0, IMAGE_NATURAL_WIDTH, IMAGE_NATURAL_HEIGHT, ox, oy, rw, rh);
 
-    ctx.drawImage(img, 0, 0, iw, ih, ox, oy, rw, rh);
-    lastDrawnFrameRef.current = frameIndex;
+    // Continuous Sub-frame alpha blend for liquid video fluidity
+    if (fraction > 0.005 && floorIndex !== ceilIndex && nextImg && nextImg.complete) {
+      ctx.globalAlpha = fraction;
+      ctx.drawImage(nextImg, 0, 0, IMAGE_NATURAL_WIDTH, IMAGE_NATURAL_HEIGHT, ox, oy, rw, rh);
+    }
   }, []);
 
-  // 3. 🎯 BUTTERY SMOOTH 60/120 FPS SCROLL-SYNCED LERP ENGINE
+  // 3. 🎯 BUTTER-SMOOTH CONTINUOUS INTERPOLATION ENGINE
   useEffect(() => {
     let animId = null;
+    let lastTime = performance.now();
 
     const setupCanvasSize = () => {
       const canvas = canvasRef.current;
       if (canvas) {
-        // Balanced DPR for optimal sharpness without 4K GPU fill-rate throttling
         const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -159,35 +157,48 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
         canvas.width = Math.round(w * dpr);
         canvas.height = Math.round(h * dpr);
 
-        if (lastDrawnFrameRef.current > 0) {
-          drawFrame(lastDrawnFrameRef.current);
-        }
+        const iw = IMAGE_NATURAL_WIDTH;
+        const ih = IMAGE_NATURAL_HEIGHT;
+        const scale = Math.max(canvas.width / iw, canvas.height / ih);
+        const rw = Math.round(iw * scale);
+        const rh = Math.round(ih * scale);
+        const ox = Math.round((canvas.width - rw) * 0.5);
+        const oy = Math.round((canvas.height - rh) * 0.5);
+
+        boundsRef.current = {
+          cw: canvas.width,
+          ch: canvas.height,
+          rw,
+          rh,
+          ox,
+          oy
+        };
+
+        drawSubFrame(currentFrameRef.current);
       }
     };
 
     setupCanvasSize();
 
-    // Fluid Animation Loop with Adaptive Dynamic Damping
-    const animate = () => {
+    // High-performance continuous damping loop
+    const animate = (currentTime) => {
+      const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
+      lastTime = currentTime;
+
       const target = targetFrameRef.current;
       const current = currentFrameRef.current;
       const diff = target - current;
 
-      if (Math.abs(diff) > 0.01) {
-        // Smooth lerp follow factor (0.16 offers ultra-smooth buttery inertia)
-        currentFrameRef.current += diff * 0.16;
-        const frameIndex = Math.min(TOTAL_FRAMES, Math.max(1, Math.round(currentFrameRef.current)));
+      if (Math.abs(diff) > 0.001) {
+        // Smooth exponential follow
+        const factor = 1 - Math.exp(-14 * dt);
+        currentFrameRef.current += diff * factor;
 
-        if (frameIndex !== lastDrawnFrameRef.current) {
-          drawFrame(frameIndex);
-        }
+        drawSubFrame(currentFrameRef.current);
         animId = requestAnimationFrame(animate);
       } else {
-        // Snap to exact target and pause RAF when resting to save CPU/GPU cycles
         currentFrameRef.current = target;
-        if (target !== lastDrawnFrameRef.current) {
-          drawFrame(target);
-        }
+        drawSubFrame(target);
         isRunningRef.current = false;
       }
     };
@@ -195,11 +206,12 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
     const startAnimationLoop = () => {
       if (!isRunningRef.current) {
         isRunningRef.current = true;
+        lastTime = performance.now();
         animId = requestAnimationFrame(animate);
       }
     };
 
-    // Native Passive Scroll Listener
+    // Instant Passive Scroll Listener
     const onScroll = () => {
       const doc = document.documentElement;
       const totalScroll = doc.scrollHeight - window.innerHeight;
@@ -207,22 +219,16 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
       if (totalScroll > 0) {
         const scrollY = window.scrollY || window.pageYOffset || 0;
         const progress = Math.min(Math.max(scrollY / totalScroll, 0), 1);
-        const nextTarget = Math.min(
-          TOTAL_FRAMES,
-          Math.max(1, Math.round(progress * (TOTAL_FRAMES - 1)) + 1)
-        );
+        const nextTarget = 1 + progress * (TOTAL_FRAMES - 1);
 
-        if (nextTarget !== targetFrameRef.current) {
-          targetFrameRef.current = nextTarget;
-          startAnimationLoop();
-        }
+        targetFrameRef.current = nextTarget;
+        startAnimationLoop();
       }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', setupCanvasSize, { passive: true });
 
-    // Initial check & draw
     onScroll();
 
     return () => {
@@ -231,12 +237,12 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
       if (animId) cancelAnimationFrame(animId);
       isRunningRef.current = false;
     };
-  }, [drawFrame]);
+  }, [drawSubFrame]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#070D14] transform-gpu">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#050B12] transform-gpu">
       
-      {/* 🎬 1. HIGH-SPEED DIRECT GPU SCROLLYTELLING CANVAS */}
+      {/* 🎬 1. ORIGINAL FULL HD PNG SCROLLYTELLING CANVAS */}
       <canvas
         ref={canvasRef}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 transform-gpu ${
@@ -244,21 +250,22 @@ export default function BackgroundCanvas({ activeSection = 'hero' }) {
         }`}
         style={{
           transform: 'translate3d(0, 0, 0)',
-          backfaceVisibility: 'hidden'
+          backfaceVisibility: 'hidden',
+          imageRendering: 'auto'
         }}
       />
 
-      {/* 🌓 2. NORDIC GLACIER & ICE CYAN AMBIENT GLOW OVERLAYS */}
+      {/* 🌓 2. SUBTLE AMBIENT ACCENTS */}
       <div
-        className="absolute inset-0 transition-all duration-700 ease-out opacity-80 pointer-events-none"
+        className="absolute inset-0 transition-all duration-700 ease-out opacity-60 pointer-events-none"
         style={{ background: SECTION_AMBIENTS[activeSection] || SECTION_AMBIENTS.hero }}
       />
 
-      {/* 🕸️ 3. Sub-pixel Cyber Grid Pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+      {/* 🕸️ 3. Ultra-subtle cyber grid */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
 
-      {/* 🌑 4. Deep Ocean Contrast Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#070D14]/50 via-[#070D14]/25 to-[#070D14]/70 pointer-events-none" />
+      {/* 🌑 4. Ultra-light vignette for contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050B12]/20 via-transparent to-[#050B12]/35 pointer-events-none" />
 
       {/* 🏷️ 5. Section Watermark */}
       <div className="absolute bottom-6 right-8 text-[120px] font-black uppercase tracking-widest text-[#38BDF8]/[0.03] select-none pointer-events-none hidden md:block">

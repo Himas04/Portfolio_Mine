@@ -39,7 +39,7 @@ export default function Hero() {
         <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
           
           {/* Status Badge with Mini Avatar */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0D1926] border border-[#1E3A5F] backdrop-blur-xl shadow-lg shadow-black/40">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0D1926]/50 border border-[#1E3A5F]/80 backdrop-blur-xl shadow-lg shadow-black/30">
             <div className="w-5 h-5 rounded-full overflow-hidden border border-[#38BDF8]">
               <img
                 src={resumeData.personal.avatar}
@@ -99,7 +99,7 @@ export default function Hero() {
             <a
               href="#contact"
               onClick={(e) => handleScrollClick(e, 'contact')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-[#F0F9FF] bg-[#0D1926] hover:bg-[#1E3A5F]/40 border border-[#1E3A5F] hover:border-[#38BDF8] transition-all cursor-pointer shadow-lg"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-[#F0F9FF] bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 border border-[#1E3A5F]/80 hover:border-[#38BDF8] transition-all cursor-pointer shadow-lg backdrop-blur-md"
             >
               <Mail className="w-4 h-4 text-[#38BDF8]" />
               <span>Contact Me</span>
@@ -110,7 +110,7 @@ export default function Hero() {
               download="Ashraff_Mohamed_Himas_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl text-sm font-bold text-[#7DD3FC] hover:text-[#070D14] bg-[#0D1926] hover:bg-[#38BDF8] border border-[#1E3A5F] hover:border-[#7DD3FC] transition-all shadow-md cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl text-sm font-bold text-[#7DD3FC] hover:text-[#070D14] bg-[#0D1926]/50 hover:bg-[#38BDF8] border border-[#1E3A5F]/80 hover:border-[#7DD3FC] transition-all shadow-md cursor-pointer backdrop-blur-md"
               title="Download Ashraff Mohamed Himas Resume PDF"
             >
               <Download className="w-4 h-4 text-[#38BDF8] group-hover:text-[#070D14]" />
@@ -126,7 +126,7 @@ export default function Hero() {
               href={resumeData.personal.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-[#0D1926] hover:bg-[#1E3A5F]/40 text-[#F0F9FF] hover:text-[#38BDF8] border border-[#1E3A5F] transition-all hover:scale-110"
+              className="p-2.5 rounded-xl bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 text-[#F0F9FF] hover:text-[#38BDF8] border border-[#1E3A5F]/80 transition-all hover:scale-110 backdrop-blur-md"
               aria-label="GitHub Profile"
             >
               <GithubIcon className="w-4 h-4" />
@@ -136,7 +136,7 @@ export default function Hero() {
               href={resumeData.personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-[#0D1926] hover:bg-[#1E3A5F]/40 text-[#F0F9FF] hover:text-[#38BDF8] border border-[#1E3A5F] transition-all hover:scale-110"
+              className="p-2.5 rounded-xl bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 text-[#F0F9FF] hover:text-[#38BDF8] border border-[#1E3A5F]/80 transition-all hover:scale-110 backdrop-blur-md"
               aria-label="LinkedIn Profile"
             >
               <LinkedinIcon className="w-4 h-4" />
@@ -146,7 +146,7 @@ export default function Hero() {
               href={resumeData.personal.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-[#0D1926] hover:bg-[#1E3A5F]/40 text-[#2DD4BF] hover:text-[#7DD3FC] border border-[#1E3A5F] transition-all hover:scale-110"
+              className="p-2.5 rounded-xl bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 text-[#2DD4BF] hover:text-[#7DD3FC] border border-[#1E3A5F]/80 transition-all hover:scale-110 backdrop-blur-md"
               aria-label="WhatsApp Contact"
             >
               <WhatsAppIcon className="w-4 h-4" />
@@ -160,22 +160,22 @@ export default function Hero() {
           {/* 🌟 Featured Profile Portrait Card */}
           <div className="relative group">
             <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#7DD3FC]/40 via-[#38BDF8]/30 to-[#2DD4BF]/40 opacity-40 blur-xl group-hover:opacity-75 transition-opacity duration-500" />
-            <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-3xl p-1.5 bg-[#0D1926] border border-[#1E3A5F] shadow-2xl backdrop-blur-2xl overflow-hidden group-hover:scale-105 transition-all duration-300">
+            <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-3xl p-1.5 bg-[#0D1926]/40 border border-[#1E3A5F]/80 shadow-2xl backdrop-blur-2xl overflow-hidden group-hover:scale-105 transition-all duration-300">
               <img
                 src={resumeData.personal.avatar}
                 alt={resumeData.personal.name}
                 className="w-full h-full object-cover object-top rounded-2xl"
               />
-              <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-xl bg-[#070D14]/90 backdrop-blur-md border border-[#1E3A5F] text-[10px] font-mono text-[#F0F9FF] text-center flex items-center justify-center gap-1.5">
+              <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-xl bg-[#070D14]/80 backdrop-blur-md border border-[#1E3A5F]/80 text-[10px] font-mono text-[#F0F9FF] text-center flex items-center justify-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#2DD4BF] animate-pulse" />
                 <span className="text-[#7DD3FC]">Ashraff Himas</span>
               </div>
             </div>
           </div>
 
-          {/* Terminal Window Card (Midnight Ice & Glacial Navy) */}
+          {/* Terminal Window Card (Translucent Glacial Glass) */}
           <div className="relative w-full max-w-md">
-            <div className="relative rounded-2xl bg-[#0D1926] border border-[#1E3A5F] p-5 shadow-2xl overflow-hidden backdrop-blur-2xl">
+            <div className="relative rounded-2xl bg-[#0D1926]/40 border border-[#1E3A5F]/70 hover:border-[#38BDF8]/60 hover:bg-[#0D1926]/55 transition-all duration-300 p-5 shadow-2xl overflow-hidden backdrop-blur-2xl">
               
               {/* Terminal Title Bar */}
               <div className="flex items-center justify-between pb-3 border-b border-[#1E3A5F]/50 mb-3">
@@ -188,7 +188,7 @@ export default function Hero() {
                   <TerminalIcon className="w-3.5 h-3.5 text-[#38BDF8]" />
                   <span>ashraff@himas-dev:~$</span>
                 </div>
-                <div className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#08101A] text-[#7DD3FC] border border-[#1E3A5F]">
+                <div className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#08101A]/60 text-[#7DD3FC] border border-[#1E3A5F]/80">
                   bash 5.2
                 </div>
               </div>
@@ -222,15 +222,15 @@ export default function Hero() {
 
               {/* Floating Quick Badges */}
               <div className="mt-3 pt-3 border-t border-[#1E3A5F]/50 grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
-                <div className="p-1.5 rounded-lg bg-[#08101A] border border-[#1E3A5F]">
+                <div className="p-1.5 rounded-lg bg-[#08101A]/60 border border-[#1E3A5F]/80">
                   <span className="text-[#F0F9FF] font-bold block text-sm">2+</span>
                   <span className="text-[#94A3B8]">Live Apps</span>
                 </div>
-                <div className="p-1.5 rounded-lg bg-[#08101A] border border-[#1E3A5F]">
+                <div className="p-1.5 rounded-lg bg-[#08101A]/60 border border-[#1E3A5F]/80">
                   <span className="text-[#38BDF8] font-bold block text-sm">20+</span>
                   <span className="text-[#94A3B8]">Bugs QA'd</span>
                 </div>
-                <div className="p-1.5 rounded-lg bg-[#08101A] border border-[#1E3A5F]">
+                <div className="p-1.5 rounded-lg bg-[#08101A]/60 border border-[#1E3A5F]/80">
                   <span className="text-[#2DD4BF] font-bold block text-sm">5+</span>
                   <span className="text-[#94A3B8]">Certs</span>
                 </div>

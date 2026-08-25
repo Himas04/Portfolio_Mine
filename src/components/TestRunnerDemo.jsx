@@ -2,14 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Play, 
   RotateCcw, 
-  CheckCircle2, 
-  Terminal, 
-  Sparkles, 
-  Clock,
-  ShieldAlert,
-  Server,
-  Layers,
-  FileCheck
+  CheckCircle2 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -67,24 +60,22 @@ export default function TestRunnerDemo() {
     '[system] QA Test Runner Initialized.',
     '[system] Ready to execute automated test assertions in headless worker container.'
   ]);
-  const [allPassed, setAllPassed] = useState(false);
-  const terminalBottomRef = useRef(null);
+  const terminalBoxRef = useRef(null);
 
   const activeSuite = TEST_SUITES.find(s => s.id === selectedSuiteId) || TEST_SUITES[0];
 
-  // Auto-scroll terminal logs
+  // Auto-scroll ONLY inside the terminal box while tests run
   useEffect(() => {
-    if (terminalBottomRef.current) {
-      terminalBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (isRunning && terminalBoxRef.current) {
+      terminalBoxRef.current.scrollTop = terminalBoxRef.current.scrollHeight;
     }
-  }, [logs]);
+  }, [logs, isRunning]);
 
   const handleRunTests = () => {
     if (isRunning) return;
     setIsRunning(true);
     setCompletedTests([]);
     setCurrentTestIndex(0);
-    setAllPassed(false);
     setLogs([
       `[worker-01] Starting test runner for: ${activeSuite.name}...`,
       `[worker-01] Engine: ${activeSuite.framework}`,
@@ -105,7 +96,6 @@ export default function TestRunnerDemo() {
       } else {
         clearInterval(interval);
         setIsRunning(false);
-        setAllPassed(true);
         setLogs(prev => [
           ...prev,
           `[worker-01] ==========================================`,
@@ -129,7 +119,6 @@ export default function TestRunnerDemo() {
     setIsRunning(false);
     setCompletedTests([]);
     setCurrentTestIndex(-1);
-    setAllPassed(false);
     setLogs([
       `[system] Switched suite to: ${activeSuite.name}`,
       `[system] Ready to execute automated tests.`
@@ -141,7 +130,6 @@ export default function TestRunnerDemo() {
     setIsRunning(false);
     setCompletedTests([]);
     setCurrentTestIndex(-1);
-    setAllPassed(false);
     const newSuite = TEST_SUITES.find(s => s.id === suiteId);
     setLogs([
       `[system] Switched test suite to: ${newSuite?.name}`,
@@ -155,13 +143,13 @@ export default function TestRunnerDemo() {
     : 0;
 
   return (
-    <div className="bg-[#0D1926] p-6 sm:p-8 rounded-3xl border border-[#1E3A5F] space-y-6 shadow-2xl backdrop-blur-2xl">
+    <div className="bg-[#050C16]/25 hover:bg-[#050C16]/40 p-6 sm:p-8 rounded-3xl border border-[#38BDF8]/30 hover:border-[#38BDF8]/70 transition-all duration-300 space-y-6 shadow-2xl backdrop-blur-md">
       
       {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1E3A5F]/50 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-[#08101A] text-[#7DD3FC] border border-[#1E3A5F]">
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-white/[0.05] text-[#7DD3FC] border border-[#38BDF8]/30 backdrop-blur-sm">
               Interactive QA Simulator
             </span>
             <span className="text-xs font-mono text-[#2DD4BF] flex items-center gap-1">
@@ -190,7 +178,7 @@ export default function TestRunnerDemo() {
           <button
             onClick={handleReset}
             disabled={isRunning}
-            className="p-3 rounded-xl bg-[#08101A] hover:bg-[#1E3A5F]/40 border border-[#1E3A5F] text-[#94A3B8] hover:text-[#F0F9FF] transition-colors cursor-pointer"
+            className="p-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-[#94A3B8] hover:text-[#F0F9FF] transition-colors cursor-pointer"
             title="Reset Terminal"
           >
             <RotateCcw className="w-4 h-4 text-[#38BDF8]" />
@@ -206,10 +194,10 @@ export default function TestRunnerDemo() {
             <button
               key={suite.id}
               onClick={() => handleSelectSuite(suite.id)}
-              className={`p-3 rounded-2xl text-left transition-all border cursor-pointer ${
+              className={`p-3 rounded-2xl text-left transition-all border cursor-pointer backdrop-blur-sm ${
                 isSelected
-                  ? 'bg-[#08101A] border-[#38BDF8] shadow-md shadow-[#38BDF8]/20'
-                  : 'bg-[#08101A]/60 border-[#1E3A5F] hover:border-[#38BDF8]/60 hover:bg-[#08101A]'
+                  ? 'bg-[#38BDF8]/20 border-[#38BDF8] shadow-md shadow-[#38BDF8]/20 text-[#F0F9FF]'
+                  : 'bg-white/[0.03] border-white/10 hover:border-[#38BDF8]/50 hover:bg-white/[0.06] text-[#94A3B8]'
               }`}
             >
               <div className="text-[11px] font-mono text-[#7DD3FC] truncate">{suite.framework.split(' ')[0]}</div>
@@ -230,7 +218,7 @@ export default function TestRunnerDemo() {
           </div>
 
           {/* Progress Bar */}
-          <div className="h-1.5 w-full bg-[#08101A] rounded-full overflow-hidden border border-[#1E3A5F]/50">
+          <div className="h-1.5 w-full bg-white/[0.05] rounded-full overflow-hidden border border-white/10">
             <div 
               className="h-full bg-gradient-to-r from-[#1E3A5F] via-[#38BDF8] to-[#2DD4BF] transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
@@ -246,12 +234,12 @@ export default function TestRunnerDemo() {
               return (
                 <div
                   key={idx}
-                  className={`p-3 rounded-2xl border text-xs font-mono transition-all flex items-center justify-between gap-3 ${
+                  className={`p-3 rounded-2xl border text-xs font-mono transition-all flex items-center justify-between gap-3 backdrop-blur-sm ${
                     isPassed
-                      ? 'bg-[#08101A] border-[#2DD4BF]/60 text-[#F0F9FF]'
+                      ? 'bg-[#2DD4BF]/10 border-[#2DD4BF]/50 text-[#F0F9FF]'
                       : isCurrent
-                      ? 'bg-[#08101A] border-[#38BDF8] text-[#7DD3FC] animate-pulse'
-                      : 'bg-[#08101A]/40 border-[#1E3A5F]/60 text-[#94A3B8]'
+                      ? 'bg-[#38BDF8]/15 border-[#38BDF8] text-[#7DD3FC] animate-pulse'
+                      : 'bg-white/[0.03] border-white/10 text-[#94A3B8]'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 truncate">
@@ -260,7 +248,7 @@ export default function TestRunnerDemo() {
                     ) : isCurrent ? (
                       <div className="w-4 h-4 rounded-full border-2 border-[#38BDF8] border-t-transparent animate-spin shrink-0" />
                     ) : (
-                      <div className="w-4 h-4 rounded-full border border-[#1E3A5F] shrink-0" />
+                      <div className="w-4 h-4 rounded-full border border-white/20 shrink-0" />
                     )}
                     <span className="truncate">{test.name}</span>
                   </div>
@@ -274,10 +262,10 @@ export default function TestRunnerDemo() {
 
         {/* Right Column: Live Terminal Log Console */}
         <div className="lg:col-span-7">
-          <div className="rounded-2xl bg-[#08101A] border border-[#1E3A5F] p-4 shadow-inner space-y-3">
+          <div className="rounded-2xl bg-[#050C16]/60 border border-[#38BDF8]/30 p-4 shadow-inner space-y-3 backdrop-blur-md">
             
             {/* Terminal Title Bar */}
-            <div className="flex items-center justify-between border-b border-[#1E3A5F]/50 pb-2">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
@@ -288,7 +276,10 @@ export default function TestRunnerDemo() {
             </div>
 
             {/* Log Output Stream */}
-            <div className="font-mono text-xs text-[#F0F9FF] h-48 overflow-y-auto space-y-1.5 pr-2 select-text">
+            <div 
+              ref={terminalBoxRef}
+              className="font-mono text-xs text-[#F0F9FF] h-48 overflow-y-auto space-y-1.5 pr-2 select-text"
+            >
               {logs.map((line, idx) => {
                 const isPassLine = line.includes('✓ PASS');
                 const isSummary = line.includes('✨ SUITE SUMMARY');
@@ -308,7 +299,6 @@ export default function TestRunnerDemo() {
                   </div>
                 );
               })}
-              <div ref={terminalBottomRef} />
             </div>
 
           </div>
