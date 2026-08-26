@@ -92,7 +92,7 @@ export default function Education() {
                 <div className="pt-5 mt-5 border-t border-white/10 flex items-center justify-between text-xs font-mono text-[#94A3B8]">
                   <span>Status: <strong className="text-[#2DD4BF] font-bold">{statusBadge}</strong></span>
                   <span className="text-[#7DD3FC] group-hover:translate-x-1 transition-transform">
-                    {item.type === 'university' ? 'Cardiff Met / Plymouth Standard →' : 'Secondary Education →'}
+                    {item.type === 'university' ? 'University of Plymouth (UK) →' : 'Secondary Education →'}
                   </span>
                 </div>
 

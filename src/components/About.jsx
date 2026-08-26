@@ -80,7 +80,7 @@ export default function About() {
 
               <div className="space-y-4 text-sm text-[#94A3B8] leading-relaxed">
                 <p>
-                  I am a passionate <strong className="text-[#F0F9FF]">BSc (Hons) in Computer Science</strong> undergraduate at <span className="text-[#7DD3FC]">Cardiff Metropolitan University (via ICBT Colombo)</span> with a solid foundation in modern software development, automated QA testing, and cloud infrastructure.
+                  I am a passionate <strong className="text-[#F0F9FF]">BSc (Hons) in Computer Science</strong> undergraduate at <span className="text-[#7DD3FC]">University of Plymouth, UK</span> with a solid foundation in modern software development, automated QA testing, and cloud infrastructure.
                 </p>
                 <p>
                   My experience ranges from developing full-stack web platforms using <strong className="text-[#F0F9FF]">React, Node.js, Express, and PostgreSQL</strong> to architecting enterprise-grade automated test pipelines using <strong className="text-[#38BDF8]">Playwright, Postman API collections, and Docker CI/CD</strong>.
