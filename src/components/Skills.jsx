@@ -97,7 +97,36 @@ export default function Skills() {
                   {(group.skills || []).map((skill, idx) => (
                     <div key={idx} className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-mono">
-                        <span className="text-[#F0F9FF] font-medium">{skill.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span 
+                            className="w-2 h-2 rounded-full shadow-sm"
+                            style={{
+                              backgroundColor: 
+                                skill.name.includes('React') ? '#61DAFB' :
+                                skill.name.includes('Node') ? '#539E43' :
+                                skill.name.includes('Docker') ? '#2496ED' :
+                                skill.name.includes('AWS') ? '#FF9900' :
+                                skill.name.includes('Mongo') ? '#00ED64' :
+                                skill.name.includes('Playwright') ? '#2DD4BF' :
+                                skill.name.includes('JavaScript') ? '#F7DF1E' :
+                                skill.name.includes('Tailwind') ? '#06B6D4' :
+                                skill.name.includes('Python') ? '#3776AB' :
+                                skill.name.includes('Postman') ? '#FF6C37' :
+                                skill.name.includes('Git') ? '#F05032' :
+                                skill.name.includes('Linux') ? '#FCC624' :
+                                skill.name.includes('PHP') ? '#777BB4' :
+                                skill.name.includes('C#') ? '#239120' :
+                                '#38BDF8',
+                              boxShadow: `0 0 8px ${
+                                skill.name.includes('React') ? '#61DAFB' :
+                                skill.name.includes('Docker') ? '#2496ED' :
+                                skill.name.includes('AWS') ? '#FF9900' :
+                                '#38BDF8'
+                              }`
+                            }}
+                          />
+                          <span className="text-[#F0F9FF] font-medium">{skill.name}</span>
+                        </div>
                         <div className="flex items-center gap-2">
                           {skill.tag && (
                             <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.05] text-[#94A3B8] border border-white/10">

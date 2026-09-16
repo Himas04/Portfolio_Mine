@@ -106,104 +106,112 @@ export default function Projects() {
               <div
                 key={project.id || pIdx}
                 onClick={() => setSelectedProject(project)}
-                className="group relative bg-[#050C16]/25 hover:bg-[#050C16]/40 rounded-3xl p-6 sm:p-8 border border-[#38BDF8]/30 hover:border-[#38BDF8]/80 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-2xl backdrop-blur-md cursor-pointer overflow-hidden"
+                className="group relative bg-[#07101E]/40 hover:bg-[#0B1728]/60 rounded-3xl border border-[#00D9FF]/20 hover:border-[#00D9FF]/60 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-2xl hover:shadow-[0_0_30px_rgba(0,217,255,0.15)] backdrop-blur-xl cursor-pointer overflow-hidden"
               >
-                <div className="space-y-5">
-                  
-                  {/* Card Header */}
-                  <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-2xl bg-white/[0.05] text-[#38BDF8] border border-[#38BDF8]/30 group-hover:scale-110 transition-transform">
-                        <CategoryIcon className="w-5 h-5 text-[#38BDF8]" />
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-white/[0.05] text-[#7DD3FC] border border-[#38BDF8]/25">
+                {/* 🖼️ Project Image Preview Banner */}
+                {project.image && (
+                  <div className="relative w-full h-48 sm:h-52 overflow-hidden border-b border-white/5 bg-[#05070D]">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out opacity-90 group-hover:opacity-100"
+                    />
+                    {/* Subtle Gradient Vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#07101E] via-transparent to-transparent opacity-80" />
+
+                    {/* Top Floating Badge */}
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-[#05070D]/80 text-[#7DD3FC] border border-[#00D9FF]/30 backdrop-blur-md shadow-md flex items-center gap-1.5">
+                        <CategoryIcon className="w-3 h-3 text-[#00D9FF]" />
+                        <span>{project.category}</span>
+                      </span>
+                    </div>
+
+                    <div className="absolute top-3 right-3 p-1.5 rounded-full bg-[#05070D]/70 border border-white/10 text-[#94A3B8] group-hover:text-[#00D9FF] transition-colors backdrop-blur-md">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-6 sm:p-7 space-y-4 flex-1 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    
+                    {/* Role & Badge (if no image or secondary info) */}
+                    {!project.image && (
+                      <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
+                        <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-white/[0.05] text-[#7DD3FC] border border-[#00D9FF]/25">
                           {project.category}
                         </span>
-                        <div className="text-xs font-mono text-[#38BDF8] mt-1">
+                        <div className="text-xs font-mono text-[#00D9FF]">
                           {project.role || 'Software Engineering'}
                         </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="p-2 rounded-xl bg-white/[0.04] border border-white/10 text-[#94A3B8] group-hover:text-[#38BDF8] group-hover:bg-[#38BDF8]/10 transition-all">
-                      <Maximize2 className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-black text-[#F0F9FF] group-hover:text-[#7DD3FC] transition-colors leading-tight">
+                    {/* Title */}
+                    <h3 className="text-xl sm:text-2xl font-black text-[#FFFFFF] group-hover:text-[#00D9FF] transition-colors leading-tight">
                       {project.title}
                     </h3>
-                  </div>
 
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed line-clamp-3">
-                    {project.summary || project.description}
-                  </p>
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed line-clamp-2">
+                      {project.summary || project.description}
+                    </p>
 
-                  {/* Key Highlights */}
-                  {project.highlights && project.highlights.length > 0 && (
-                    <div className="space-y-1.5 p-3 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-sm">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-[#7DD3FC] font-bold">
-                        Key Accomplishment:
-                      </div>
-                      <div className="flex items-start gap-2 text-xs text-[#F0F9FF] font-mono leading-relaxed">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2DD4BF] mt-0.5 shrink-0" />
-                        <span className="line-clamp-2">{project.highlights[0]}</span>
-                      </div>
+                    {/* Tech Badges */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {projectTags.slice(0, 5).map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="text-[10px] px-2 py-0.5 rounded-md bg-[#05070D]/70 border border-[#00D9FF]/20 font-mono text-[#7DD3FC] backdrop-blur-sm"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {projectTags.length > 5 && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-white/[0.04] text-[#94A3B8] font-mono">
+                          +{projectTags.length - 5}
+                        </span>
+                      )}
                     </div>
-                  )}
-
-                  {/* Tech Badges */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {projectTags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[11px] px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 font-mono text-[#7DD3FC] backdrop-blur-sm"
-                      >
-                        {tag}
-                      </span>
-                    ))}
                   </div>
 
-                </div>
+                  {/* Bottom Card Actions (Explore Link + GitHub + Demo) */}
+                  <div className="pt-4 mt-3 border-t border-white/10 flex items-center justify-between">
+                    <button
+                      type="button"
+                      className="text-xs font-bold font-mono text-[#00D9FF] hover:text-[#7DD3FC] flex items-center gap-1.5 group-hover:translate-x-1 transition-all cursor-pointer"
+                    >
+                      <span>Explore Case Study</span>
+                      <ChevronRight className="w-4 h-4 text-[#00D9FF]" />
+                    </button>
 
-                {/* Bottom Card Actions (Explore Link) */}
-                <div className="pt-5 mt-5 border-t border-white/10 flex items-center justify-between">
-                  <button
-                    type="button"
-                    className="text-xs font-bold font-mono text-[#38BDF8] hover:text-[#7DD3FC] flex items-center gap-1.5 group-hover:translate-x-1 transition-all cursor-pointer"
-                  >
-                    <span>Explore Case Study</span>
-                    <ChevronRight className="w-4 h-4 text-[#38BDF8]" />
-                  </button>
-
-                  <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                    {githubUrl && (
-                      <a
-                        href={githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] text-[#94A3B8] hover:text-[#F0F9FF] border border-white/10 transition-colors"
-                        title="View GitHub Repository"
-                      >
-                        <GithubIcon className="w-4 h-4" />
-                      </a>
-                    )}
-                    {demoUrl && (
-                      <a
-                        href={demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] text-[#2DD4BF] hover:text-[#7DD3FC] border border-white/10 transition-colors"
-                        title="Live Production Demo"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
+                    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      {githubUrl && (
+                        <a
+                          href={githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-xl bg-white/[0.04] hover:bg-[#00D9FF]/20 text-[#94A3B8] hover:text-[#FFFFFF] border border-white/10 hover:border-[#00D9FF]/50 transition-colors"
+                          title="View GitHub Repository"
+                        >
+                          <GithubIcon className="w-4 h-4" />
+                        </a>
+                      )}
+                      {demoUrl && (
+                        <a
+                          href={demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-xl bg-white/[0.04] hover:bg-[#2DD4BF]/20 text-[#2DD4BF] hover:text-[#FFFFFF] border border-white/10 hover:border-[#2DD4BF]/50 transition-colors"
+                          title="Live Production Demo"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
                   </div>
+
                 </div>
 
               </div>

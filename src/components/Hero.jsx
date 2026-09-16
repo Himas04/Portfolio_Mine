@@ -1,28 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { 
   ArrowRight, 
-  Mail, 
   Download, 
-  MapPin, 
-  CheckCircle, 
-  Terminal as TerminalIcon, 
-  ChevronDown
+  ChevronDown,
+  MousePointer
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, WhatsAppIcon } from './Icons';
 import { resumeData } from '../data/resumeData';
 import { smoothScrollTo } from '../utils/smoothScroll';
+import Hero3DOrbital from './Hero3DOrbital';
 
 export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const roles = resumeData.personal.roles;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, [roles.length]);
-
   const handleScrollClick = (e, targetId) => {
     e.preventDefault();
     smoothScrollTo(targetId);
@@ -31,78 +19,67 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen pt-28 pb-16 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-screen pt-28 pb-16 flex flex-col justify-center items-center px-4 sm:px-8 lg:px-12 xl:pl-28 2xl:pl-32 overflow-hidden bg-[#05070D]"
     >
-      <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      {/* 🌌 Full-Hero 3D Technology Orbit & Ambient Glass Cubes Space */}
+      <div className="absolute inset-0 w-full h-full pointer-events-auto z-0 overflow-hidden">
+        <Hero3DOrbital />
+      </div>
+
+      {/* 🌟 Main 2-Column Hero Content Grid */}
+      <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10 pointer-events-none">
         
-        {/* Left Column: Bio & Action Callouts */}
-        <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+        {/* Left Column: Typography, Badges & Action Calls */}
+        <div className="lg:col-span-6 space-y-6 text-left pointer-events-auto">
           
-          {/* Status Badge with Mini Avatar */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0D1926]/50 border border-[#1E3A5F]/80 backdrop-blur-xl shadow-lg shadow-black/30">
-            <div className="w-5 h-5 rounded-full overflow-hidden border border-[#38BDF8]">
-              <img
-                src={resumeData.personal.avatar}
-                alt={resumeData.personal.name}
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-            <span className="text-xs font-mono font-medium text-[#7DD3FC]">
-              {resumeData.personal.status}
+          {/* Subtle Status Badge: OPEN TO INTERNSHIPS / JUNIOR ROLES */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B1220]/80 border border-[#00D9FF]/25 shadow-sm backdrop-blur-md">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2DD4BF] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2DD4BF]" />
+            </span>
+            <span className="text-[11px] font-mono font-medium tracking-wide text-[#7DD3FC]/90">
+              OPEN TO INTERNSHIPS / JUNIOR ROLES
             </span>
           </div>
 
-          {/* Name & Dynamic Title */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-center lg:justify-start gap-2 text-xs font-mono uppercase tracking-widest text-[#94A3B8]">
-              <MapPin className="w-3.5 h-3.5 text-[#38BDF8]" />
-              <span className="text-[#F0F9FF]">{resumeData.personal.location}</span>
-              <span className="text-[#1E3A5F]">•</span>
-              <span>CS Undergraduate</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F0F9FF] leading-tight">
-              Hello, I'm <br />
-              <span className="gradient-text-hero text-glow-cyan">
-                {resumeData.personal.name}
+          {/* Main Headline */}
+          <div className="space-y-2">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#FFFFFF] leading-tight">
+              Hi, I'm{' '}
+              <span className="text-[#00D9FF] drop-shadow-[0_0_35px_rgba(0,217,255,0.45)]">
+                Himas
               </span>
             </h1>
 
-            {/* Rotating Role Text */}
-            <div className="h-10 sm:h-12 flex items-center justify-center lg:justify-start">
-              <div className="text-xl sm:text-2xl font-mono font-bold text-[#F0F9FF] flex items-center gap-2">
-                <span className="text-[#1E3A5F]">&gt;</span>
-                <span className="text-[#38BDF8] transition-all duration-500">
-                  {roles[roleIndex]}
-                </span>
-                <span className="w-2.5 h-6 bg-[#2DD4BF] animate-pulse inline-block" />
-              </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#F0F9FF] tracking-tight">
+              Final Year Computer Science Student
+            </h2>
+
+            {/* Role subtitle */}
+            <div className="flex flex-wrap items-center gap-2.5 text-sm sm:text-base font-medium text-[#94A3B8] pt-1 font-mono">
+              <span className="text-[#F0F9FF]">Full-Stack Developer</span>
+              <span className="text-[#1E3A5F]">|</span>
+              <span className="text-[#00D9FF]">QA Engineer</span>
+              <span className="text-[#1E3A5F]">|</span>
+              <span className="text-[#2DD4BF]">DevOps Enthusiast</span>
             </div>
           </div>
 
-          {/* Short Intro Summary */}
-          <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-md">
-            {resumeData.personal.headline} Experienced in <span className="text-[#F0F9FF] font-semibold underline decoration-[#38BDF8]/50 underline-offset-4">MERN Stack</span>, <span className="text-[#F0F9FF] font-semibold underline decoration-[#2DD4BF]/50 underline-offset-4">Docker & CI/CD</span>, and automated QA testing with <span className="text-[#7DD3FC] font-semibold">Playwright</span>.
+          {/* Intro Description */}
+          <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-xl">
+            I build modern web applications, automate testing, and explore cloud technologies to create efficient, scalable, and user-friendly solutions.
           </p>
 
-          {/* Action CTAs */}
-          <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
+          {/* Action Buttons: View My Projects & Download CV */}
+          <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#projects"
               onClick={(e) => handleScrollClick(e, 'projects')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-[#070D14] bg-[#38BDF8] hover:bg-[#7DD3FC] shadow-xl shadow-[#38BDF8]/25 transition-all hover:scale-105 cursor-pointer"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-bold text-sm text-[#05070D] bg-[#00D9FF] hover:bg-[#38BDF8] hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg shadow-[#00D9FF]/25"
             >
-              <span>Explore My Work</span>
-              <ArrowRight className="w-4 h-4 text-[#070D14]" />
-            </a>
-
-            <a
-              href="#contact"
-              onClick={(e) => handleScrollClick(e, 'contact')}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-[#F0F9FF] bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 border border-[#1E3A5F]/80 hover:border-[#38BDF8] transition-all cursor-pointer shadow-lg backdrop-blur-md"
-            >
-              <Mail className="w-4 h-4 text-[#38BDF8]" />
-              <span>Contact Me</span>
+              <span>View My Projects</span>
+              <ArrowRight className="w-4 h-4 text-[#05070D]" />
             </a>
 
             <a
@@ -110,23 +87,20 @@ export default function Hero() {
               download="Ashraff_Mohamed_Himas_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl text-sm font-bold text-[#7DD3FC] hover:text-[#070D14] bg-[#0D1926]/50 hover:bg-[#38BDF8] border border-[#1E3A5F]/80 hover:border-[#7DD3FC] transition-all shadow-md cursor-pointer backdrop-blur-md"
-              title="Download Ashraff Mohamed Himas Resume PDF"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full font-semibold text-sm text-[#FFFFFF] bg-transparent hover:bg-white/[0.08] border border-[#1E3A5F] hover:border-[#00D9FF] transition-all duration-300 cursor-pointer shadow-md backdrop-blur-md hover:scale-105"
             >
-              <Download className="w-4 h-4 text-[#38BDF8] group-hover:text-[#070D14]" />
-              <span>Get Resume</span>
+              <span>Download CV</span>
+              <Download className="w-4 h-4 text-[#00D9FF]" />
             </a>
           </div>
 
-          {/* Social Links Bar */}
-          <div className="pt-4 flex items-center justify-center lg:justify-start gap-3">
-            <span className="text-xs font-mono text-[#94A3B8]">Connect:</span>
-            
+          {/* Social Links Row */}
+          <div className="pt-2 flex items-center gap-3">
             <a
               href={resumeData.personal.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 text-[#F0F9FF] hover:text-[#38BDF8] border border-[#1E3A5F]/80 transition-all hover:scale-110 backdrop-blur-md"
+              className="p-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#94A3B8] hover:text-[#00D9FF] border border-white/10 hover:border-[#00D9FF]/60 transition-all hover:scale-110"
               aria-label="GitHub Profile"
             >
               <GithubIcon className="w-4 h-4" />
@@ -136,7 +110,7 @@ export default function Hero() {
               href={resumeData.personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 text-[#F0F9FF] hover:text-[#38BDF8] border border-[#1E3A5F]/80 transition-all hover:scale-110 backdrop-blur-md"
+              className="p-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#94A3B8] hover:text-[#00D9FF] border border-white/10 hover:border-[#00D9FF]/60 transition-all hover:scale-110"
               aria-label="LinkedIn Profile"
             >
               <LinkedinIcon className="w-4 h-4" />
@@ -146,113 +120,45 @@ export default function Hero() {
               href={resumeData.personal.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-[#0D1926]/50 hover:bg-[#1E3A5F]/50 text-[#2DD4BF] hover:text-[#7DD3FC] border border-[#1E3A5F]/80 transition-all hover:scale-110 backdrop-blur-md"
+              className="p-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] text-[#2DD4BF] hover:text-[#7DD3FC] border border-white/10 hover:border-[#2DD4BF]/60 transition-all hover:scale-110"
               aria-label="WhatsApp Contact"
             >
               <WhatsAppIcon className="w-4 h-4" />
             </a>
           </div>
-        </div>
-
-        {/* Right Column: Profile Image & Interactive Terminal IDE Card */}
-        <div className="lg:col-span-5 flex flex-col items-center gap-6">
-          
-          {/* 🌟 Featured Profile Portrait Card */}
-          <div className="relative group">
-            <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#7DD3FC]/40 via-[#38BDF8]/30 to-[#2DD4BF]/40 opacity-40 blur-xl group-hover:opacity-75 transition-opacity duration-500" />
-            <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-3xl p-1.5 bg-[#0D1926]/40 border border-[#1E3A5F]/80 shadow-2xl backdrop-blur-2xl overflow-hidden group-hover:scale-105 transition-all duration-300">
-              <img
-                src={resumeData.personal.avatar}
-                alt={resumeData.personal.name}
-                className="w-full h-full object-cover object-top rounded-2xl"
-              />
-              <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-xl bg-[#070D14]/80 backdrop-blur-md border border-[#1E3A5F]/80 text-[10px] font-mono text-[#F0F9FF] text-center flex items-center justify-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#2DD4BF] animate-pulse" />
-                <span className="text-[#7DD3FC]">Ashraff Himas</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Terminal Window Card (Translucent Glacial Glass) */}
-          <div className="relative w-full max-w-md">
-            <div className="relative rounded-2xl bg-[#0D1926]/40 border border-[#1E3A5F]/70 hover:border-[#38BDF8]/60 hover:bg-[#0D1926]/55 transition-all duration-300 p-5 shadow-2xl overflow-hidden backdrop-blur-2xl">
-              
-              {/* Terminal Title Bar */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#1E3A5F]/50 mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#94A3B8]">
-                  <TerminalIcon className="w-3.5 h-3.5 text-[#38BDF8]" />
-                  <span>ashraff@himas-dev:~$</span>
-                </div>
-                <div className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#08101A]/60 text-[#7DD3FC] border border-[#1E3A5F]/80">
-                  bash 5.2
-                </div>
-              </div>
-
-              {/* Terminal Code Content */}
-              <div className="font-mono text-xs space-y-2.5 text-[#F0F9FF] leading-relaxed">
-                <div>
-                  <span className="text-[#38BDF8] font-semibold">const</span> developer = &#123;
-                </div>
-                <div className="pl-4 space-y-1 text-[#94A3B8]">
-                  <div><span className="text-[#7DD3FC]">name</span>: <span className="text-[#38BDF8]">"Ashraff Mohamed Himas"</span>,</div>
-                  <div><span className="text-[#7DD3FC]">role</span>: <span className="text-[#F0F9FF]">"Full-Stack / QA / DevOps"</span>,</div>
-                  <div><span className="text-[#7DD3FC]">degree</span>: <span className="text-[#F0F9FF]">"BSc (Hons) Computer Science"</span>,</div>
-                  <div><span className="text-[#7DD3FC]">stack</span>: [
-                    <span className="text-[#38BDF8]">"React"</span>, 
-                    <span className="text-[#38BDF8]">"Node"</span>, 
-                    <span className="text-[#2DD4BF]">"Docker"</span>, 
-                    <span className="text-[#38BDF8]">"Playwright"</span>
-                  ],</div>
-                  <div><span className="text-[#7DD3FC]">openToWork</span>: <span className="text-[#2DD4BF] font-bold">true</span></div>
-                </div>
-                <div>&#125;;</div>
-
-                <div className="pt-2 border-t border-[#1E3A5F]/50 flex items-center justify-between text-[11px] text-[#94A3B8]">
-                  <span className="flex items-center gap-1 text-[#7DD3FC] font-medium">
-                    <CheckCircle className="w-3.5 h-3.5 text-[#2DD4BF]" /> All systems passing
-                  </span>
-                  <span className="text-[#1E3A5F] font-mono">v2.0.26</span>
-                </div>
-              </div>
-
-              {/* Floating Quick Badges */}
-              <div className="mt-3 pt-3 border-t border-[#1E3A5F]/50 grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
-                <div className="p-1.5 rounded-lg bg-[#08101A]/60 border border-[#1E3A5F]/80">
-                  <span className="text-[#F0F9FF] font-bold block text-sm">2+</span>
-                  <span className="text-[#94A3B8]">Live Apps</span>
-                </div>
-                <div className="p-1.5 rounded-lg bg-[#08101A]/60 border border-[#1E3A5F]/80">
-                  <span className="text-[#38BDF8] font-bold block text-sm">20+</span>
-                  <span className="text-[#94A3B8]">Bugs QA'd</span>
-                </div>
-                <div className="p-1.5 rounded-lg bg-[#08101A]/60 border border-[#1E3A5F]/80">
-                  <span className="text-[#2DD4BF] font-bold block text-sm">5+</span>
-                  <span className="text-[#94A3B8]">Certs</span>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
+
+        {/* Right Column: Spatial area on desktop allowing the 3D Technology Orbit to shine */}
+        <div className="lg:col-span-6 w-full flex items-center justify-center relative min-h-[380px] sm:min-h-[460px] lg:min-h-[580px] pointer-events-none" />
 
       </div>
 
-      {/* Scroll Down Hint */}
-      <div className="mt-12 flex flex-col items-center gap-2 text-[#94A3B8] hover:text-[#F0F9FF] transition-colors animate-bounce cursor-pointer">
-        <a 
-          href="#about" 
+      {/* Bottom Footer Telemetry & SCROLL TO EXPLORE Indicator */}
+      <div className="w-full max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#94A3B8] relative z-10 pointer-events-auto">
+        <div className="flex items-center gap-2">
+          <span>Code</span>
+          <span className="text-[#00D9FF]">→</span>
+          <span>Test</span>
+          <span className="text-[#00D9FF]">→</span>
+          <span>Deploy</span>
+          <span className="text-[#00D9FF]">→</span>
+          <span className="text-[#F0F9FF] font-semibold">Build the Future</span>
+        </div>
+
+        <a
+          href="#about"
           onClick={(e) => handleScrollClick(e, 'about')}
-          className="flex flex-col items-center text-xs font-mono cursor-pointer"
+          className="group flex items-center gap-2 text-[#94A3B8] hover:text-[#00D9FF] transition-colors cursor-pointer"
         >
-          <span>Scroll to explore</span>
-          <ChevronDown className="w-4 h-4 text-[#38BDF8]" />
+          <span className="text-[11px] tracking-widest uppercase">SCROLL TO EXPLORE</span>
+          <div className="w-4 h-5 rounded-full border border-white/30 group-hover:border-[#00D9FF]/60 flex items-start justify-center p-0.5 transition-colors">
+            <span className="w-1 h-1.5 bg-[#00D9FF] rounded-full animate-bounce" />
+          </div>
         </a>
       </div>
     </section>
   );
 }
+
+

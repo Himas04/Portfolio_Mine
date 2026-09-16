@@ -1,277 +1,225 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const TOTAL_FRAMES = 100;
-const IMAGE_NATURAL_WIDTH = 1920;
-const IMAGE_NATURAL_HEIGHT = 1080;
-
-// Section ambient accent glows
+// Section-Mood Atmospheric Aurora Gradients
 const SECTION_AMBIENTS = {
-  hero: 'radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.15) 0%, transparent 70%)',
-  about: 'radial-gradient(circle at 20% 40%, rgba(45, 212, 191, 0.12) 0%, transparent 60%)',
-  experience: 'radial-gradient(circle at 80% 50%, rgba(56, 189, 248, 0.12) 0%, transparent 65%)',
-  projects: 'radial-gradient(circle at 50% 60%, rgba(125, 211, 252, 0.14) 0%, transparent 70%)',
-  skills: 'radial-gradient(circle at 30% 70%, rgba(45, 212, 191, 0.12) 0%, transparent 60%)',
-  education: 'radial-gradient(circle at 70% 30%, rgba(56, 189, 248, 0.12) 0%, transparent 65%)',
-  certificates: 'radial-gradient(circle at 50% 65%, rgba(45, 212, 191, 0.14) 0%, transparent 65%)',
-  contact: 'radial-gradient(circle at 50% 80%, rgba(56, 189, 248, 0.16) 0%, transparent 70%)'
+  hero: 'radial-gradient(circle at 50% 20%, rgba(0, 217, 255, 0.22) 0%, rgba(124, 58, 237, 0.12) 35%, rgba(11, 18, 32, 0.05) 60%, transparent 75%)',
+  about: 'radial-gradient(circle at 25% 35%, rgba(45, 212, 191, 0.22) 0%, rgba(0, 217, 255, 0.10) 40%, transparent 70%)',
+  experience: 'radial-gradient(circle at 75% 45%, rgba(56, 189, 248, 0.22) 0%, rgba(99, 102, 241, 0.12) 40%, transparent 70%)',
+  projects: 'radial-gradient(circle at 50% 50%, rgba(0, 217, 255, 0.24) 0%, rgba(56, 189, 248, 0.12) 45%, transparent 75%)',
+  skills: 'radial-gradient(circle at 35% 60%, rgba(124, 58, 237, 0.22) 0%, rgba(129, 140, 248, 0.12) 45%, transparent 70%)',
+  education: 'radial-gradient(circle at 65% 35%, rgba(56, 189, 248, 0.20) 0%, rgba(45, 212, 191, 0.10) 45%, transparent 70%)',
+  certificates: 'radial-gradient(circle at 50% 65%, rgba(45, 212, 191, 0.22) 0%, rgba(0, 217, 255, 0.10) 45%, transparent 70%)',
+  contact: 'radial-gradient(circle at 50% 80%, rgba(0, 217, 255, 0.25) 0%, rgba(124, 58, 237, 0.14) 45%, transparent 75%)'
 };
 
-const getFramePath = (index) => {
-  const padded = String(index).padStart(3, '0');
-  return `/assets/Images/ezgif-frame-${padded}.png`;
-};
+// Subtle engineering telemetry strings for negative-space atmosphere
+const TELEMETRY_SNIPPETS = [
+  'PIPELINE // RUNNING',
+  'TEST SUITE // 42 PASS',
+  'CLUSTER // US-EAST-1',
+  'DOCKER // HEALTHY',
+  'API // 200 OK',
+  'GIT // COMMIT SYNCED'
+];
 
 export default function BackgroundCanvas({ activeSection = 'hero' }) {
   const canvasRef = useRef(null);
-  const imagesRef = useRef(new Array(TOTAL_FRAMES + 1));
-  const loadedSetRef = useRef(new Set());
-  const targetFrameRef = useRef(1);
-  const currentFrameRef = useRef(1);
-  const isRunningRef = useRef(false);
-  const isReadyRef = useRef(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const activeSectionRef = useRef(activeSection);
+  activeSectionRef.current = activeSection;
 
-  // Cached geometry bounds for instantaneous GPU rendering
-  const boundsRef = useRef({ cw: 0, ch: 0, rw: 0, rh: 0, ox: 0, oy: 0 });
-
-  // 1. ⚡ PARALLEL PRELOADER FOR ORIGINAL PNG IMAGES
   useEffect(() => {
-    let isMounted = true;
-    const images = new Array(TOTAL_FRAMES + 1);
-
-    const loadSingleImage = (index) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = getFramePath(index);
-
-        img.onload = () => {
-          if (!isMounted) return resolve(img);
-          loadedSetRef.current.add(index);
-          images[index] = img;
-
-          // Render first frame immediately
-          if (index === 1 && !isReadyRef.current) {
-            isReadyRef.current = true;
-            setIsLoaded(true);
-            drawSubFrame(1.0);
-          }
-          resolve(img);
-        };
-
-        img.onerror = () => {
-          resolve(null);
-        };
-
-        images[index] = img;
-      });
-    };
-
-    imagesRef.current = images;
-
-    // Load initial 10 frames with priority
-    const priorityBatch = [];
-    for (let i = 1; i <= Math.min(10, TOTAL_FRAMES); i++) {
-      priorityBatch.push(loadSingleImage(i));
-    }
-
-    Promise.all(priorityBatch).then(() => {
-      if (!isMounted) return;
-      // Load remaining frames
-      for (let i = 11; i <= TOTAL_FRAMES; i++) {
-        loadSingleImage(i);
-      }
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  // 2. 🎬 ULTRA-FLUID SUB-FRAME ALPHA CROSS-FADING ENGINE
-  const drawSubFrame = useCallback((frameFloat) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
-    const ctx = canvas.getContext('2d', {
-      alpha: false,
-      desynchronized: true
-    });
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const { cw, ch, rw, rh, ox, oy } = boundsRef.current;
-    if (cw === 0 || ch === 0) return;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    const clamped = Math.max(1, Math.min(TOTAL_FRAMES, frameFloat));
-    const floorIndex = Math.floor(clamped);
-    const ceilIndex = Math.min(TOTAL_FRAMES, floorIndex + 1);
-    const fraction = clamped - floorIndex;
-
-    let baseImg = imagesRef.current[floorIndex];
-    let nextImg = imagesRef.current[ceilIndex];
-
-    // Fallback if specific frame is buffering
-    if (!baseImg || !baseImg.complete) {
-      for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-        const prev = floorIndex - offset;
-        const next = floorIndex + offset;
-        if (prev >= 1 && loadedSetRef.current.has(prev)) {
-          baseImg = imagesRef.current[prev];
-          break;
-        }
-        if (next <= TOTAL_FRAMES && loadedSetRef.current.has(next)) {
-          baseImg = imagesRef.current[next];
-          break;
-        }
-      }
-    }
-
-    if (!nextImg || !nextImg.complete) {
-      nextImg = baseImg;
-    }
-
-    if (!baseImg || !baseImg.complete) return;
-
-    // Draw primary frame (100% solid opacity)
-    ctx.globalAlpha = 1.0;
-    ctx.drawImage(baseImg, 0, 0, IMAGE_NATURAL_WIDTH, IMAGE_NATURAL_HEIGHT, ox, oy, rw, rh);
-
-    // Continuous Sub-frame alpha blend for liquid video fluidity
-    if (fraction > 0.005 && floorIndex !== ceilIndex && nextImg && nextImg.complete) {
-      ctx.globalAlpha = fraction;
-      ctx.drawImage(nextImg, 0, 0, IMAGE_NATURAL_WIDTH, IMAGE_NATURAL_HEIGHT, ox, oy, rw, rh);
-    }
-  }, []);
-
-  // 3. 🎯 BUTTER-SMOOTH CONTINUOUS INTERPOLATION ENGINE
-  useEffect(() => {
+    let isTabActive = true;
     let animId = null;
-    let lastTime = performance.now();
 
-    const setupCanvasSize = () => {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+    // Mouse tracking for interactive laser web
+    const mouse = { x: -1000, y: -1000, radius: 140 };
 
-        canvas.width = Math.round(w * dpr);
-        canvas.height = Math.round(h * dpr);
+    const onMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
 
-        const iw = IMAGE_NATURAL_WIDTH;
-        const ih = IMAGE_NATURAL_HEIGHT;
-        const scale = Math.max(canvas.width / iw, canvas.height / ih);
-        const rw = Math.round(iw * scale);
-        const rh = Math.round(ih * scale);
-        const ox = Math.round((canvas.width - rw) * 0.5);
-        const oy = Math.round((canvas.height - rh) * 0.5);
+    const onMouseLeave = () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    };
 
-        boundsRef.current = {
-          cw: canvas.width,
-          ch: canvas.height,
-          rw,
-          rh,
-          ox,
-          oy
-        };
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave);
 
-        drawSubFrame(currentFrameRef.current);
+    const onResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+
+    const onVisibilityChange = () => {
+      isTabActive = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    // Particle System (55 lightweight floating nodes)
+    const PARTICLE_COUNT = 55;
+    const particles = [];
+    const colors = ['#00D9FF', '#2DD4BF', '#38BDF8', '#818CF8'];
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        baseVx: (Math.random() - 0.5) * 0.45,
+        baseVy: (Math.random() - 0.5) * 0.45,
+        radius: 1.2 + Math.random() * 1.5,
+        color: colors[i % colors.length],
+        alpha: 0.2 + Math.random() * 0.35,
+        pulseSpeed: 0.02 + Math.random() * 0.02,
+        pulseAngle: Math.random() * Math.PI * 2
+      });
+    }
+
+    // 60 FPS Render Loop
+    const render = () => {
+      animId = requestAnimationFrame(render);
+      if (!isTabActive) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const section = activeSectionRef.current;
+
+      // Section-specific behavioral adjustments
+      let targetDx = 0;
+      let targetDy = 0;
+
+      if (section === 'experience') {
+        targetDy = -0.3; // subtle upward deployment flow
+      } else if (section === 'contact') {
+        // particles gravitate gently towards center
+      }
+
+      // 1. Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Section behavioral steering
+        if (section === 'contact') {
+          const centerX = width / 2;
+          const centerY = height / 2;
+          p.x += (centerX - p.x) * 0.001;
+          p.y += (centerY - p.y) * 0.001;
+        }
+
+        p.x += p.vx + targetDx;
+        p.y += p.vy + targetDy;
+
+        // Wrap around screen boundaries
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        // Mouse avoidance/interaction
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < mouse.radius) {
+          const force = (1 - dist / mouse.radius) * 0.8;
+          p.x -= (dx / dist) * force;
+          p.y -= (dy / dist) * force;
+
+          // Connect cursor to particle with a subtle cyan laser hairline
+          ctx.beginPath();
+          ctx.moveTo(mouse.x, mouse.y);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = `rgba(0, 217, 255, ${(1 - dist / mouse.radius) * 0.25})`;
+          ctx.lineWidth = 0.75;
+          ctx.stroke();
+        }
+
+        // Pulse opacity
+        p.pulseAngle += p.pulseSpeed;
+        const currentAlpha = p.alpha + Math.sin(p.pulseAngle) * 0.1;
+
+        // Draw particle dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0.1, Math.min(currentAlpha, 0.7));
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+
+      // 2. Connect nearby particles with subtle cyber constellation hairlines
+      const MAX_DISTANCE = 110;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+
+          if (d < MAX_DISTANCE) {
+            const lineAlpha = (1 - d / MAX_DISTANCE) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(0, 217, 255, ${lineAlpha})`;
+            ctx.lineWidth = 0.65;
+            ctx.stroke();
+          }
+        }
       }
     };
 
-    setupCanvasSize();
-
-    // High-performance continuous damping loop
-    const animate = (currentTime) => {
-      const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
-      lastTime = currentTime;
-
-      const target = targetFrameRef.current;
-      const current = currentFrameRef.current;
-      const diff = target - current;
-
-      if (Math.abs(diff) > 0.001) {
-        // Smooth exponential follow
-        const factor = 1 - Math.exp(-14 * dt);
-        currentFrameRef.current += diff * factor;
-
-        drawSubFrame(currentFrameRef.current);
-        animId = requestAnimationFrame(animate);
-      } else {
-        currentFrameRef.current = target;
-        drawSubFrame(target);
-        isRunningRef.current = false;
-      }
-    };
-
-    const startAnimationLoop = () => {
-      if (!isRunningRef.current) {
-        isRunningRef.current = true;
-        lastTime = performance.now();
-        animId = requestAnimationFrame(animate);
-      }
-    };
-
-    // Instant Passive Scroll Listener
-    const onScroll = () => {
-      const doc = document.documentElement;
-      const totalScroll = doc.scrollHeight - window.innerHeight;
-
-      if (totalScroll > 0) {
-        const scrollY = window.scrollY || window.pageYOffset || 0;
-        const progress = Math.min(Math.max(scrollY / totalScroll, 0), 1);
-        const nextTarget = 1 + progress * (TOTAL_FRAMES - 1);
-
-        targetFrameRef.current = nextTarget;
-        startAnimationLoop();
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', setupCanvasSize, { passive: true });
-
-    onScroll();
+    render();
 
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', setupCanvasSize);
+      window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       if (animId) cancelAnimationFrame(animId);
-      isRunningRef.current = false;
     };
-  }, [drawSubFrame]);
+  }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#050B12] transform-gpu">
-      
-      {/* 🎬 1. ORIGINAL FULL HD PNG SCROLLYTELLING CANVAS */}
-      <canvas
-        ref={canvasRef}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 transform-gpu ${
-          isLoaded ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{
-          transform: 'translate3d(0, 0, 0)',
-          backfaceVisibility: 'hidden',
-          imageRendering: 'auto'
-        }}
-      />
-
-      {/* 🌓 2. SUBTLE AMBIENT ACCENTS */}
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#05070D] transform-gpu">
+      {/* 🌓 1. Dynamic Section-Mood Atmospheric Aurora Shifts */}
       <div
-        className="absolute inset-0 transition-all duration-700 ease-out opacity-60 pointer-events-none"
+        className="absolute inset-0 transition-all duration-1000 ease-out opacity-90 pointer-events-none"
         style={{ background: SECTION_AMBIENTS[activeSection] || SECTION_AMBIENTS.hero }}
       />
 
-      {/* 🕸️ 3. Ultra-subtle cyber grid */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
+      {/* 🔮 2. Subtle Floating Atmospheric Mesh Orbs */}
+      <div className="absolute -top-[25%] -left-[15%] w-[65vw] h-[65vw] rounded-full bg-gradient-to-br from-[#00D9FF]/12 via-[#7C3AED]/8 to-transparent blur-[140px] pointer-events-none animate-pulse duration-[8000ms]" />
+      <div className="absolute top-[40%] -right-[20%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-[#2DD4BF]/12 via-[#00D9FF]/6 to-transparent blur-[150px] pointer-events-none animate-pulse duration-[10000ms]" />
+      <div className="absolute -bottom-[25%] left-[20%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-tr from-[#7C3AED]/12 via-[#1E3A5F]/20 to-transparent blur-[160px] pointer-events-none animate-pulse duration-[12000ms]" />
 
-      {/* 🌑 4. Ultra-light vignette for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050B12]/20 via-transparent to-[#050B12]/35 pointer-events-none" />
+      {/* 🕸️ 3. Ultra-Subtle Cyber Tech Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
-      {/* 🏷️ 5. Section Watermark */}
-      <div className="absolute bottom-6 right-8 text-[120px] font-black uppercase tracking-widest text-[#38BDF8]/[0.03] select-none pointer-events-none hidden md:block">
+      {/* 🌌 4. Interactive Constellation Canvas Across All Sections */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
+      />
+
+      {/* 🌑 5. Deep Contrast Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#05070D]/60 via-transparent to-[#05070D]/80 pointer-events-none" />
+
+      {/* 🏷️ 6. Faint Architectural Section Watermark (Far Bottom Right) */}
+      <div className="absolute bottom-6 right-8 text-[110px] font-black uppercase tracking-widest text-[#00D9FF]/[0.025] select-none pointer-events-none hidden md:block">
         {activeSection}
       </div>
-
     </div>
   );
 }

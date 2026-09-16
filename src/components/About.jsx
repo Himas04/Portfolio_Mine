@@ -80,29 +80,29 @@ export default function About() {
 
               <div className="space-y-4 text-sm text-[#94A3B8] leading-relaxed">
                 <p>
-                  I am a passionate <strong className="text-[#F0F9FF]">BSc (Hons) in Computer Science</strong> undergraduate at <span className="text-[#7DD3FC]">University of Plymouth, UK</span> with a solid foundation in modern software development, automated QA testing, and cloud infrastructure.
+                  I am a <strong className="text-[#F0F9FF]">Final Year BSc (Hons) in Computer Science</strong> undergraduate at <span className="text-[#7DD3FC]">University of Plymouth, UK</span> with <strong className="text-[#00D9FF]">1+ years of hands-on experience</strong> developing modern web applications and conducting thorough manual quality assurance testing.
                 </p>
                 <p>
-                  My experience ranges from developing full-stack web platforms using <strong className="text-[#F0F9FF]">React, Node.js, Express, and PostgreSQL</strong> to architecting enterprise-grade automated test pipelines using <strong className="text-[#38BDF8]">Playwright, Postman API collections, and Docker CI/CD</strong>.
+                  My background spans building full-stack platforms using <strong className="text-[#F0F9FF]">React, Node.js, Express, MongoDB, and PostgreSQL</strong>, while actively advancing into <strong className="text-[#2DD4BF]">QA Automation (Playwright, Postman API testing)</strong> and <strong className="text-[#38BDF8]">DevOps workflows (Docker containerization, CI/CD deployment pipelines, and cloud hosting)</strong>.
                 </p>
                 <p>
-                  Currently interning as a <strong className="text-[#2DD4BF]">Full-Stack Developer</strong> at <span className="text-[#F0F9FF]">MARAZIN Academy</span>, where I build production features, implement PostgreSQL Row-Level Security, and optimize UI performance.
+                  Currently contributing as a <strong className="text-[#2DD4BF]">Full-Stack Developer Intern</strong> at <span className="text-[#F0F9FF]">MARAZIN Academy and Software Solution</span>, where I build production features, validate API and UI workflows, and optimize deployment cycles.
                 </p>
               </div>
 
               {/* Stat Highlights Row */}
               <div className="pt-4 border-t border-white/10 grid grid-cols-3 gap-3 text-center">
                 <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
-                  <span className="text-xl sm:text-2xl font-black text-[#F0F9FF] block">BSc</span>
-                  <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Comp Science</span>
+                  <span className="text-xl sm:text-2xl font-black text-[#00D9FF] block">1+ Yrs</span>
+                  <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Dev & QA Exp</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
-                  <span className="text-xl sm:text-2xl font-black text-[#38BDF8] block">5+</span>
-                  <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Verified Certs</span>
+                  <span className="text-xl sm:text-2xl font-black text-[#38BDF8] block">Final Yr</span>
+                  <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">BSc Plymouth</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
-                  <span className="text-xl sm:text-2xl font-black text-[#2DD4BF] block">100%</span>
-                  <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Commitment</span>
+                  <span className="text-xl sm:text-2xl font-black text-[#2DD4BF] block">5+</span>
+                  <span className="text-[10px] sm:text-xs font-mono text-[#94A3B8]">Certifications</span>
                 </div>
               </div>
 
